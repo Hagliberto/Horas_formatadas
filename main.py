@@ -1,19 +1,30 @@
 import PySimpleGUI as sg
 import pandas as pd
 import os
+import random
 
 
 def criar_janela():
-    sg.theme('DarkBlue')  # Define o tema da janela
+    temas_disponiveis = [
+        'Default', 'Dark', 'LightGrey', 'DarkGrey', 'BlueMono', 'BrownBlue', 'DarkAmber', 'DarkBlue', 'DarkBrown', 'DarkGreen',
+        'DarkPurple', 'DarkTeal', 'Dark2', 'Dark5', 'Dark7', 'DarkBlack', 'Material1', 'Material2', 'Material3', 'Material4',
+        'DarkRed1', 'DarkRed2', 'DarkRed3', 'DarkRed4', 'DarkRed5', 'DarkRed6', 'DarkRed7', 'DarkRed8', 'LightGreen', 'LightBlue',
+        'LightPurple', 'LightOrange', 'LightPink', 'LightBrown', 'LightGray', 'LightYellow', 'LightCyan', 'LightTeal',
+        'LightOliveGreen', 'LightGold', 'LightSilver', 'LightRed', 'LightMagenta', 'DarkGray', 'DarkYellow', 'DarkCyan',
+        'DarkTeal2', 'DarkOliveGreen', 'DarkGold', 'DarkSilver'
+    ]  # Lista de temas disponíveis
+    tema_aleatorio = random.choice(temas_disponiveis)
+    sg.theme(tema_aleatorio)
+
     layout = [
         [sg.Frame('', layout=[
-            [sg.Text('Selecione pelo menos um arquivo .XLSX das Horas:', font=(
-                'Sans Serif', 8), justification='center')]
+            [sg.Text('Selecione pelo menos um arquivo .XLSX das Horas:',
+                     font=('Sans Serif', 8), justification='center')]
         ], relief=sg.RELIEF_SUNKEN, pad=(0, 5))],
 
         [sg.Text('GMN:', size=(10, 1)), sg.Input(key='-GMN-', default_text='Arquivo de horas da GMN', enable_events=True),
          sg.FileBrowse(file_types=(("XLSX Files", "*.xlsx"),), button_text='Escolha o arquivo')],
-        
+
         [sg.Text('UMAN:', size=(10, 1)), sg.Input(key='-UMAN-', default_text='Arquivo de horas da UMAN', enable_events=True),
          sg.FileBrowse(file_types=(("XLSX Files", "*.xlsx"),), button_text='Escolha o arquivo')],
 
@@ -41,8 +52,8 @@ def criar_janela():
                 'Helvetica', 8), justification='center')]
         ], relief=sg.RELIEF_SUNKEN, pad=(0, 5))]
     ]
-    return sg.Window('Processar Arquivos XLSX', layout,
-                     element_justification='c')  # Cria a janela
+    # Cria a janela
+    return sg.Window('Processar Arquivos XLSX', layout, element_justification='c')
 
 
 def ler_e_processar_arquivo(arquivo):
@@ -79,10 +90,10 @@ def processar_arquivos(arquivos, nome_arquivo_saida, pasta_destino):
             arquivo_saida = os.path.join(
                 pasta_destino, f'{nome_arquivo_saida}.xlsx')
             dados_completos.to_excel(arquivo_saida, index=False, header=False)
-            
+
             arquivo_saida = f'{nome_arquivo_saida}.xlsx'
             dados_completos.to_excel(
-            arquivo_saida, index=False, header=False)
+                arquivo_saida, index=False, header=False)
 
             for verba in dados_completos[1].unique():
                 dados_verba = dados_completos[dados_completos[1] == verba]
@@ -113,7 +124,7 @@ def processar_arquivos(arquivos, nome_arquivo_saida, pasta_destino):
 
             arquivo_saida = f'{nome_arquivo_saida}.xlsx'
             dados_completos.to_excel(
-            arquivo_saida, index=False, header=False)
+                arquivo_saida, index=False, header=False)
 
             for verba in dados_completos[0].unique():
                 dados_verba = dados_completos[dados_completos[0] == verba]
